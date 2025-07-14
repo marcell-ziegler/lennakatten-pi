@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lennakatten-pi"
+version = "0.1.0"
+description = "En enkel smartklocka för Lennakatten museijärnväg"
+authors = [{ name = "Marcell Ziegler", email = "marcell.ziegler.22@gmail.com" }]
+license = { text = "GPL-3.0" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: POSIX :: Linux :: Raspberry Pi OS Bookworm",
+]
+dependencies = ["spidev>=3.6", "smbus2>=0.4.0", "Pillow>=9.0.0", "evdev>=1.6.0"]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0"]

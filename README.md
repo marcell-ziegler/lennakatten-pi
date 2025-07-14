@@ -1,2 +1,3 @@
-# lennakatten-pi
-Smartklocka för lennakatten
+# Lennakatten Pi
+
+En enkel smartklocka för Lennakatten museijärnväg.
