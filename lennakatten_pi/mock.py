@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing_extensions import Literal
 import importlib.resources
+import pygame
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from lennakatten_pi.utils import GrayLevel
@@ -15,6 +16,25 @@ class MockDisplay:
         self.width = width
         self.height = height
         self.font = ImageFont.load_default()
+        self.pygame_initialized = False
+        self.pygame_screen = None
+        self._init_pygame()
+
+    def _init_pygame(self):
+        pygame.init()
+        self.pygame_screen = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption("MockDisplay")
+        self.pygame_initialized = True
+        self._update_pygame()  # Show initial white image
+
+    def _update_pygame(self):
+        # Convert PIL image to pygame surface and display
+        mode = self.image.mode
+        size = self.image.size
+        data = self.image.tobytes()
+        surface = pygame.image.fromstring(data, size, mode)
+        self.pygame_screen.blit(surface, (0, 0))  # type: ignore
+        pygame.display.flip()
 
     def draw_menu(
         self,
@@ -74,7 +94,14 @@ class MockDisplay:
         self.image.paste(0xFFFFFF, (0, 0, self.width, self.height))
 
     def show(self):
-        self.image.show()
+        if self.pygame_initialized:
+            self._update_pygame()
+            # Handle window events to keep it responsive
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+        else:
+            self.image.show()
 
 
 class DrawableImage:
